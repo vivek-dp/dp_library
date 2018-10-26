@@ -151,7 +151,7 @@ module DP
 		hit_pts = face_off_pts temp_face, -2
 		#temp_face = ent.add_face(hit_pts[0],hit_pts[1],hit_pts[2],hit_pts[3])
 		del_comps = [temp_face, temp_face.edges]
-		del_comps.flatten.each{|x| ent.erase_entities x if x.valid?}
+		del_comps.flatten.each{|x| ent.erase_entities x unless x.deleted?}
 		
 		return hit_pts, vector
 	end
@@ -184,7 +184,11 @@ module DP
 			}
 		}
 		del_comps = [hit_face, hit_face.edges]
-		del_comps.flatten.each{|x| ent.erase_entities x}
+		del_comps.flatten.each{|x| 
+            unless x.deleted?
+                ent.erase_entities x 
+            end
+        }
 		return visible_comps
 	end
 	
@@ -218,7 +222,7 @@ module DP
 	end
     
     def self.del_face face
-        face.edges.each{|x| Sketchup.active_model.entities.erase_entities x}
+        face.edges.each{|x| Sketchup.active_model.entities.erase_entities x unless x.deleted?}
     end
 	
 	#Parse the components and get the hash.

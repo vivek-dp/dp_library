@@ -137,6 +137,30 @@ class DecorPot
             add_comp_dimension comp
         }
     end
+    
+    def get_rows comp_h,  corners
+        rows = []
+        corners.each{|cor|
+            adjs = comp_h[cor][:adj]
+            row = []
+            adjs.each{|adj_comp|
+                row  = [cor]
+                curr = adj_comp
+                #comp_h[cor][:adj].delete curr
+                comp_h[curr][:adj].delete cor
+                while comp_h[curr][:type] == :double
+                    row << curr
+                    adj_next = comp_h[curr][:adj][0]
+                    comp_h[adj_next][:adj].delete curr
+                    comp_h[curr][:adj].delete adj_next
+                    curr = adj_next
+                end
+                row << curr
+                rows << row
+            }
+        }
+        return rows
+    end
 
     def get_comp_rows comp_h, view
         rows = []

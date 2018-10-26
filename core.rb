@@ -166,6 +166,7 @@ module DP
 		ent	  = mod.entities
 				
 		comps = ent.grep(Sketchup::ComponentInstance)
+        comps = comps.select{|x| x.hidden? == false}
 		
 		#comps = Sketchup.active_model.selection
 		
@@ -216,7 +217,7 @@ module DP
 		comp_arr.each {|comp| 
 			next if comp.definition.name == 'region'
 			pid = DP::pid comp;
-			comps[pid] = {:type=>false, :adj=>[]} #, :dims=>{}}
+			comps[pid] = {:type=>false, :adj=>[] , :row_elem=>false}
 		}
 		comps
 	end

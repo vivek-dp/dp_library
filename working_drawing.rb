@@ -50,109 +50,114 @@ class DecorPot
         face_pts
     end
     
-    def add_comp_dimension comp, view='top', side_dimension=false
+    def add_comp_dimension comp, view='top', show_dimension=true
         return nil unless comp.valid?
         bounds = comp.bounds
         
-        show_dim = false
         layer_name = 'DP_dimension_'+view
+        dim_off = 10
         case view
         when 'top'   
             rotz = comp.transformation.rotz
             case rotz
             when 0
-                st_index, end_index, vector = 2,3, Geom::Vector3d.new(0,100,0)
+                st_index, end_index, vector = 2,3, Geom::Vector3d.new(0,dim_off,0)
                 pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
                 pt1.z=500;pt2.z=500
                 dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
                 dim_l.layer = layer_name
-
-                st_index, end_index, vector = 0,2, Geom::Vector3d.new(-100,0,0)
-                pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
-                pt1.z=500;pt2.z=500
-                dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
-                dim_l.layer = layer_name
+                if show_dimension
+                    puts "show dimension"
+                    st_index, end_index, vector = 0,2, Geom::Vector3d.new(-dim_off,0,0)
+                    pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
+                    pt1.z=500;pt2.z=500
+                    dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
+                    dim_l.layer = layer_name
+                end
             when 90
-                st_index, end_index, vector = 0,2, Geom::Vector3d.new(-100,0,0)
+                st_index, end_index, vector = 0,2, Geom::Vector3d.new(-dim_off,0,0)
                 pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
                 pt1.z=500;pt2.z=500
                 dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
                 dim_l.layer = layer_name
-                
-                st_index, end_index, vector = 0,1, Geom::Vector3d.new(0,100,0)
+                if show_dimension
+                    st_index, end_index, vector = 0,1, Geom::Vector3d.new(0,dim_off,0)
+                    pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
+                    pt1.z=500;pt2.z=500
+                    dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
+                    dim_l.layer = layer_name
+                end
+            when 180, -180
+                st_index, end_index, vector = 0,1, Geom::Vector3d.new(0,-dim_off,0)
                 pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
                 pt1.z=500;pt2.z=500
                 dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
                 dim_l.layer = layer_name
-            when 180
-                st_index, end_index, vector = 0,1, Geom::Vector3d.new(0,-100,0)
-                pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
-                pt1.z=500;pt2.z=500
-                dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
-                dim_l.layer = layer_name
-
-                st_index, end_index, vector = 0,2, Geom::Vector3d.new(-100,0,0)
-                pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
-                pt1.z=500;pt2.z=500
-                dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)	
-                dim_l.layer = layer_name
+                if show_dimension
+                    st_index, end_index, vector = 0,2, Geom::Vector3d.new(-dim_off,0,0)
+                    pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
+                    pt1.z=500;pt2.z=500
+                    dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)	
+                    dim_l.layer = layer_name
+                end
             when -90
-                st_index, end_index, vector = 1,3, Geom::Vector3d.new(100,0,0)
+                st_index, end_index, vector = 1,3, Geom::Vector3d.new(dim_off,0,0)
                 pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
                 pt1.z=500;pt2.z=500
                 dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
                 dim_l.layer = layer_name
-
-                st_index, end_index, vector = 0,1, Geom::Vector3d.new(0,-100,0)
-                pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
-                pt1.z=500;pt2.z=500
-                dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
-                dim_l.layer = layer_name
+                if show_dimension
+                    st_index, end_index, vector = 0,1, Geom::Vector3d.new(0,-dim_off,0)
+                    pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
+                    pt1.z=500;pt2.z=500
+                    dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
+                    dim_l.layer = layer_name
+                end
             end	
         when 'left'
-            st_index, end_index, vector = 2,6, Geom::Vector3d.new(0,100,0)
+            st_index, end_index, vector = 2,6, Geom::Vector3d.new(0,dim_off,0)
             pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
             pt1.x=-500;pt2.x=-500
             dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
             dim_l.layer = layer_name
 
-            st_index, end_index, vector = 2,0, Geom::Vector3d.new(0,0,-100)
+            st_index, end_index, vector = 2,0, Geom::Vector3d.new(0,0,-dim_off)
             pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
             pt1.x=-500;pt2.x=-500
             dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
             dim_l.layer = layer_name
         when 'right'
-            st_index, end_index, vector = 1,5, Geom::Vector3d.new(0,-100,0)
+            st_index, end_index, vector = 1,5, Geom::Vector3d.new(0,-dim_off,0)
             pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
             pt1.x=500;pt2.x=500
             dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
             dim_l.layer = layer_name
 
-            st_index, end_index, vector = 1,3, Geom::Vector3d.new(0,0,-100)
+            st_index, end_index, vector = 1,3, Geom::Vector3d.new(0,0,-dim_off)
             pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
             pt1.x=500;pt2.x=500
             dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
             dim_l.layer = layer_name
         when 'front'
-            st_index, end_index, vector = 0,1, Geom::Vector3d.new(0,0,-100)
+            st_index, end_index, vector = 0,1, Geom::Vector3d.new(0,0,-dim_off)
             pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
             pt1.y=-500;pt2.y=-500
             dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
             dim_l.layer = layer_name
 
-            st_index, end_index, vector = 0,4, Geom::Vector3d.new(-100,0,0)
+            st_index, end_index, vector = 0,4, Geom::Vector3d.new(-dim_off,0,0)
             pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
             pt1.y=-500;pt2.y=-500
             dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
             dim_l.layer = layer_name
         when 'back'
-            st_index, end_index, vector = 2,3, Geom::Vector3d.new(0,0,-100)
+            st_index, end_index, vector = 2,3, Geom::Vector3d.new(0,0,-dim_off)
             pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
             pt1.y=500;pt2.y=500
             dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
             dim_l.layer = layer_name
 
-            st_index, end_index, vector = 2,6, Geom::Vector3d.new(100,0,0)
+            st_index, end_index, vector = 2,6, Geom::Vector3d.new(dim_off,0,0)
             pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
             pt1.y=500;pt2.y=500
             dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
@@ -161,58 +166,88 @@ class DecorPot
         
     end
     
+    def add_row_dimension row, view
+        comp_names = []
+        row.each{ |id|
+            comp = DP::get_comp_pid(id)
+            defn_name   = comp.definition.name
+            puts "cludes : #{defn_name} : #{comp_names}"
+            if comp_names.include?(defn_name)
+                puts "Includes : #{defn_name}"
+                add_comp_dimension comp, view
+            else
+                comp_names << defn_name
+                add_comp_dimension comp, view, false
+            end
+        }
+        puts comp_names
+    end
+    
     def add_dimensions comp_h, view='top'
         #outline_drawing comp_h, view
         #corners = get_corners view
-        comp_h.each { |comp_details|
-            
+        rows = get_comp_rows comp_h, view
+        row_elems = rows.flatten.uniq
+        comp_h.keys.each { |id|
+            comp_h[id][:row_elem] = true if row_elems.include?(id)
         }
+        puts "rows: #{rows} : #{row_elems}"
+        rows.each{|row|
+            add_row_dimension row, view
+        }
+        
         comp_h.each { |comp_details|
             comp_id = comp_details[0]
             comp = DP::get_comp_pid comp_id
-            add_comp_dimension comp, view
+            add_comp_dimension comp, view unless comp_h[comp_id][:row_elem]
         }
     end
     
-    def get_rows comp_h,  corners
-        rows = []
-        corners.each{|cor|
-            adjs = comp_h[cor][:adj]
-            row = []
-            adjs.each{|adj_comp|
-                row  = [cor]
-                curr = adj_comp
-                #comp_h[cor][:adj].delete curr
-                comp_h[curr][:adj].delete cor
-                while comp_h[curr][:type] == :double
-                    row << curr
-                    adj_next = comp_h[curr][:adj][0]
-                    comp_h[adj_next][:adj].delete curr
-                    comp_h[curr][:adj].delete adj_next
-                    curr = adj_next
-                end
-                row << curr
-                rows << row
-            }
-        }
-        return rows
+    def get_comp_rows comp_h, view
+        corners = []
+		comp_h.each_pair{|x, y| corners<<x if y[:type]==:corner}
+		#corners=[5207,5208,5209,5210]
+		#corners=[5208, 5209]
+        #corners = [4761, 4789]
+        puts comp_h
+		rows = []
+		#sel.clear
+        corners.each{|id| comp_h[id][:type]=:corner}
+		corners.each{|cor|
+			adjs = comp_h[cor][:adj]
+			row = []
+			adjs.each{|adj_comp|
+				row  = [cor]
+				curr = adj_comp
+				#comp_h[cor][:adj].delete curr
+				comp_h[curr][:adj].delete cor
+				while comp_h[curr][:type] == :double
+					row << curr
+					adj_next = comp_h[curr][:adj][0]
+					comp_h[adj_next][:adj].delete curr
+					comp_h[curr][:adj].delete adj_next
+					curr = adj_next
+				end
+				row << curr
+                row.sort_by!{|r| comp=DP.get_comp_pid r; comp.transformation.origin.x}
+				rows << row
+			}
+        } 
+        rows
     end
 
-    def get_comp_rows comp_h, view
-        rows = []
-        corners
-    end
-    
     def outline_drawing view, offset=500 #comp_h not needed
         comps 	= DP::get_visible_comps view
 		comp_h 	= DP::parse_components comps 
         
+        puts comp_h
         comp_h.keys.each{|cid|
             comp = DP::get_comp_pid cid
             next if comp.nil?
             pts = get_outline_pts comp, view, offset
 
             face = Sketchup.active_model.entities.add_face(pts)
+            face.edges.each{|edge| edge.layer = 'DP_outline_'+view}
             face.layer 	= 	'DP_outline_'+view
             face.hidden	=	true
         }
@@ -231,7 +266,13 @@ class DecorPot
         Sketchup.active_model.layers.add(layer_name) if Sketchup.active_model.layers[layer_name].nil?
         
         outline_drawing view
+        puts "done"
 	end
+    
+    def get_all_views
+        views = ['top', 'left', 'right', 'back', 'front']
+        views.each { |v|  working_drawing v  }
+    end
     
     def get_single_adj comp_h
         singles=[]; comp_h.each_pair{|x, y| singles<<x if y[:type] == :single}; return singles

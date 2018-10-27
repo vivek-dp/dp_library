@@ -61,9 +61,10 @@ class DecorPot
             rotz = comp.transformation.rotz
             case rotz
             when 0
-                st_index, end_index, vector = 2,3, Geom::Vector3d.new(0,dim_off,0)
+                st_index, end_index, vector, lvector = 2,3, Geom::Vector3d.new(0,dim_off,0), Geom::Vector3d.new(0,2*dim_off,0)
                 pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
                 pt1.z=500;pt2.z=500
+                mid_point = Geom.linear_combination( 0.5, pt1, 0.5, pt2 )
                 dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
                 dim_l.layer = layer_name
                 if show_dimension
@@ -75,9 +76,10 @@ class DecorPot
                     dim_l.layer = layer_name
                 end
             when 90
-                st_index, end_index, vector = 0,2, Geom::Vector3d.new(-dim_off,0,0)
+                st_index, end_index, vector, lvector = 0,2, Geom::Vector3d.new(-dim_off,0,0), Geom::Vector3d.new(0,-dim_off*2,0)
                 pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
                 pt1.z=500;pt2.z=500
+                mid_point = Geom.linear_combination( 0.5, pt1, 0.5, pt2 )
                 dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
                 dim_l.layer = layer_name
                 if show_dimension
@@ -88,9 +90,10 @@ class DecorPot
                     dim_l.layer = layer_name
                 end
             when 180, -180
-                st_index, end_index, vector = 0,1, Geom::Vector3d.new(0,-dim_off,0)
+                st_index, end_index, vector, lvector = 0,1, Geom::Vector3d.new(0,-dim_off,0), Geom::Vector3d.new(0,-dim_off*2,0)
                 pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
                 pt1.z=500;pt2.z=500
+                mid_point = Geom.linear_combination( 0.5, pt1, 0.5, pt2 )
                 dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
                 dim_l.layer = layer_name
                 if show_dimension
@@ -101,9 +104,10 @@ class DecorPot
                     dim_l.layer = layer_name
                 end
             when -90
-                st_index, end_index, vector = 1,3, Geom::Vector3d.new(dim_off,0,0)
+                st_index, end_index, vector, lvector = 1,3, Geom::Vector3d.new(dim_off,0,0), Geom::Vector3d.new(2*dim_off,0,0)
                 pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
                 pt1.z=500;pt2.z=500
+                mid_point = Geom.linear_combination( 0.5, pt1, 0.5, pt2 )
                 dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
                 dim_l.layer = layer_name
                 if show_dimension
@@ -114,6 +118,8 @@ class DecorPot
                     dim_l.layer = layer_name
                 end
             end	
+            lam_code = comp.get_attribute('Example', 'Hello')
+            text = Sketchup.active_model.entities.add_text lam_code, mid_point, lvector if lam_code && !lam_code.empty?
         when 'left'
             st_index, end_index, vector = 2,6, Geom::Vector3d.new(0,dim_off,0)
             pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)

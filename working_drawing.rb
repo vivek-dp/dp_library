@@ -50,6 +50,19 @@ class DecorPot
         face_pts
     end
     
+    def set_lamination comp, value
+        dict_name = 'lamination_code'
+        key = 'lamination'
+        comp.set_attribute(dict_name, key, value)
+    end
+
+    def get_lamination comp
+        dict_name = 'lamination_code'
+        key = 'lamination'
+        lam_code = comp.get_attribute(dict_name, key)
+        return lam_code
+    end
+    
     def add_comp_dimension comp, view='top', show_dimension=true
         return nil unless comp.valid?
         bounds = comp.bounds
@@ -118,7 +131,7 @@ class DecorPot
                     dim_l.layer = layer_name
                 end
             end	
-            lam_code = comp.get_attribute('Example', 'Hello')
+            lam_code = get_lamination comp
             text = Sketchup.active_model.entities.add_text lam_code, mid_point, lvector if lam_code && !lam_code.empty?
         when 'left'
             st_index, end_index, vector = 2,6, Geom::Vector3d.new(0,dim_off,0)

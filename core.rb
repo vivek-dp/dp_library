@@ -271,7 +271,7 @@ module DP
 	
 	#Create layers for multi components
 	def self.create_layers
-		layers = ['DP_Floor', 'DP_Dimension_layer', 'DP_Comp_layer']
+		layers = ['DP_Floor', 'DP_Dimension_layer', 'DP_Comp_layer', 'DP_lamination']
 		layers.each { |name|
 			Sketchup.active_model.layers.add(name) if Sketchup.active_model.layers[name].nil?
 		}

@@ -3,13 +3,13 @@ require_relative 'tt_bounds.rb'
 
 
 def create_wall_doors inp_h={}
-	inp_h =	{	"wall1"=>"2100",
-		 "wall2"=>"2200",
-		 "wheight"=>"520",
-		 "wthick"=>"50",
-		"door"=>{	"door_view"=>"front", 
+	inp_h =	{	"wall1"=>"21000",
+				"wall2"=>"22000",
+				"wheight"=>"5200",
+				"wthick"=>"50",
+				"door"=>{	"door_view"=>"front", 
 				"door_position"=>"100", 
-				"door_height"=>"150"}
+				"door_height"=>"2100"}
 	}
 	return nil if inp_h.empty?
 	#create walls
@@ -26,16 +26,14 @@ def create_wall_doors inp_h={}
 		puts thick, thick.class
 		pi = Math::PI
 		
-		
 		if (not ((thick.class==Fixnum || thick.class==Float || thick.class==Length) && thick!=0))
-			puts "inside" #return nil
+			return nil
 		end
 		verts = floor_face.outer_loop.vertices
 		pts = []
 		floor = []
 
 		0.upto(verts.length-1) do |a|
-			#puts verts[a], verts[a].position
 			vec1 = (verts[a].position-verts[a-(verts.length-1)].position).normalize
 			vec2 = (verts[a].position-verts[a-1].position).normalize
 			vec3 = (vec1+vec2).normalize
@@ -76,7 +74,7 @@ def create_wall_doors inp_h={}
 	door_view 		= door_h['door_view'].to_sym
 	door_position	= door_h['door_position'].to_f.mm.to_inch
 	door_height		= door_h['door_height'].to_f.mm.to_inch
-	door_width		= 100.mm.to_inch
+	door_width		= 800.mm.to_inch
 	zvector			= Geom::Vector3d.new(0, 0, 1)
 
 	views = [:front, :back, :left, :right]
@@ -95,19 +93,19 @@ def create_wall_doors inp_h={}
 			door.pushpull -thick
 			
 	#Use for windows creation		
-	=begin		
-			Sketchup.active_model.entities.erase_entities door unless door.deleted?
-			
-			vector		= Geom::Vector3d.new(0, -1, 0)
-			
-			wall_start_point 	= door_start_point.offset(vector, thick)
-			wall_end_point		= door_end_point.offset(vector, thick)
-			wall_left_point		= wall_start_point.offset(zvector, door_height)
-			wall_right_point	= wall_end_point.offset(zvector, door_height)
-			
-			wall_door = mod.entities.add_face(wall_start_point, wall_end_point, wall_right_point, wall_left_point)
-			Sketchup.active_model.entities.erase_entities wall_door unless wall_door.deleted?
-	=end		
+=begin		
+		Sketchup.active_model.entities.erase_entities door unless door.deleted?
+		
+		vector		= Geom::Vector3d.new(0, -1, 0)
+		
+		wall_start_point 	= door_start_point.offset(vector, thick)
+		wall_end_point		= door_end_point.offset(vector, thick)
+		wall_left_point		= wall_start_point.offset(zvector, door_height)
+		wall_right_point	= wall_end_point.offset(zvector, door_height)
+		
+		wall_door = mod.entities.add_face(wall_start_point, wall_end_point, wall_right_point, wall_left_point)
+		Sketchup.active_model.entities.erase_entities wall_door unless wall_door.deleted?
+=end		
 		when :back
 			vector = Geom::Vector3d.new(1, 0, 0)
 			start_point = TT::Bounds.point(floor_face.bounds, 2)

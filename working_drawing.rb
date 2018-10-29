@@ -1,8 +1,8 @@
 #-------------------------------------------------------------------------------    
 # 
 # File containing code for working drawing
-# 
-#
+# #load 'E:\git\poc_demo\dp_library\working_drawing.rb'
+# #DecorPot.new.working_drawing
 #-------------------------------------------------------------------------------    
 
 require_relative 'core.rb'
@@ -12,6 +12,7 @@ class DecorPot
     
     def initialize
         DP::create_layers
+		add_lamination_menu
     end
     
     def get_outline_pts comp, view, offset
@@ -51,17 +52,33 @@ class DecorPot
     end
     
     def set_lamination comp, value
+		return nil unless comp.valid?
         dict_name = 'lamination_code'
         key = 'lamination'
         comp.set_attribute(dict_name, key, value)
     end
 
     def get_lamination comp
+		return nil unless comp.valid?
         dict_name = 'lamination_code'
         key = 'lamination'
         lam_code = comp.get_attribute(dict_name, key)
         return lam_code
     end
+	
+	def add_lamination_menu
+		UI.add_context_menu_handler do |popup|
+			sel = Sketchup.active_model.selection
+			if sel[0].is_a?(Sketchup::ComponentInstance)
+				popup.add_item('Lamination Code') {
+					prompts = ["Enter lamination code"]
+					defaults = [""]
+					input = UI.inputbox(prompts, defaults, "Lamination code.")
+					set_lamination sel[0], input[0] if input
+				}
+			end
+		end  
+	end
     
     def add_comp_dimension comp, view='top', show_dimension=true
         return nil unless comp.valid?
@@ -81,7 +98,6 @@ class DecorPot
                 dim_l = Sketchup.active_model.entities.add_dimension_linear(pt1, pt2, vector)
                 dim_l.layer = layer_name
                 if show_dimension
-                    puts "show dimension"
                     st_index, end_index, vector = 0,2, Geom::Vector3d.new(-dim_off,0,0)
                     pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
                     pt1.z=500;pt2.z=500
@@ -133,6 +149,7 @@ class DecorPot
             end	
             lam_code = get_lamination comp
             text = Sketchup.active_model.entities.add_text lam_code, mid_point, lvector if lam_code && !lam_code.empty?
+			text.layer = 'DP_lamination' if text
         when 'left'
             st_index, end_index, vector = 2,6, Geom::Vector3d.new(0,dim_off,0)
             pt1, pt2 = TT::Bounds.point(comp.bounds, st_index), TT::Bounds.point(comp.bounds, end_index)
@@ -190,9 +207,7 @@ class DecorPot
         row.each{ |id|
             comp = DP::get_comp_pid(id)
             defn_name   = comp.definition.name
-            puts "cludes : #{defn_name} : #{comp_names}"
             if comp_names.include?(defn_name)
-                puts "Includes : #{defn_name}"
                 add_comp_dimension comp, view
             else
                 comp_names << defn_name
@@ -210,7 +225,6 @@ class DecorPot
         comp_h.keys.each { |id|
             comp_h[id][:row_elem] = true if row_elems.include?(id)
         }
-        puts "rows: #{rows} : #{row_elems}"
         rows.each{|row|
             add_row_dimension row, view
         }
@@ -228,7 +242,7 @@ class DecorPot
 		#corners=[5207,5208,5209,5210]
 		#corners=[5208, 5209]
         #corners = [4761, 4789]
-        puts comp_h
+        #puts comp_h
 		rows = []
 		#sel.clear
         corners.each{|id| comp_h[id][:type]=:corner}
@@ -259,7 +273,7 @@ class DecorPot
         comps 	= DP::get_visible_comps view
 		comp_h 	= DP::parse_components comps 
         
-        puts comp_h
+        #puts comp_h
         comp_h.keys.each{|cid|
             comp = DP::get_comp_pid cid
             next if comp.nil?

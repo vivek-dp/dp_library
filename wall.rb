@@ -8,8 +8,14 @@ def create_wall_doors inp_h={}
 				"wheight"=>"5200",
 				"wthick"=>"50",
 				"door"=>{	"door_view"=>"front", 
-				"door_position"=>"100", 
-				"door_height"=>"2100"}
+				"door_position"=>"1000", 
+				"door_height"=>"2100"},
+				"windows"=>{"window_view"=>"front", 
+					"window_position"	=>"3000",
+					"window_height"		=>"1000",					
+					"window_length"		=>"1000",
+					"window_width"		=>"1000",
+				}
 	}
 	return nil if inp_h.empty?
 	#create walls
@@ -141,4 +147,36 @@ def create_wall_doors inp_h={}
 			door.pushpull -thick
 		end
 	}
+	
+	#----------------------------------------------------------------------------------
+	
+	
+	window_h 			= inp_h["windows"]
+	window_view			= window_h["window_view"].to_sym
+	window_position		= window_h["window_position"].to_f.mm.to_inch
+	window_height		= window_h["window_height"].to_f.mm.to_inch
+	window_length		= window_h["window_length"].to_f.mm.to_inch
+	window_width		= window_h["window_width"].to_f.mm.to_inch
+	
+	case window_view
+	when :front
+		puts "front..............."
+		vector 		= Geom::Vector3d.new(-1, 0, 0)
+		start_point = TT::Bounds.point(floor_face.bounds, 1) 
+		start_point.z += window_height
+		
+		window_start_point 	= start_point.offset(vector, window_position)
+		window_end_point	= start_point.offset(vector, window_position+window_width)
+		window_left_point	= window_start_point.offset(zvector, window_length)
+		window_right_point	= window_end_point.offset(zvector, window_length)
+		
+		window = mod.entities.add_face(window_start_point, window_end_point, window_right_point,window_left_point)
+		window.pushpull -thick
+	when :back
+	when :left
+	when :right
+	end
+	
+	
+	
 end

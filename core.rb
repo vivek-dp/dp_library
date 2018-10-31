@@ -4,6 +4,7 @@
 #
 #-----------------------------------------------
 
+
 require 'sketchup.rb'
 require_relative 'tt_bounds.rb'
 require_relative 'test.rb'
@@ -169,6 +170,7 @@ module DP
         comps = comps.select{|x| x.hidden? == false}
 		
 		#comps = Sketchup.active_model.selection
+		['DP_Floor', 'DP_Wall'].each{|layer| Sketchup.active_model.layers[layer].visible=false}
 		
 		hit_face = get_view_face view
 		visible_comps = []
@@ -190,6 +192,7 @@ module DP
                 ent.erase_entities x 
             end
         }
+		['DP_Floor', 'DP_Wall'].each{|layer| Sketchup.active_model.layers[layer].visible=true}
 		return visible_comps
 	end
 	
@@ -271,7 +274,7 @@ module DP
 	
 	#Create layers for multi components
 	def self.create_layers
-		layers = ['DP_Floor', 'DP_Dimension_layer', 'DP_Comp_layer', 'DP_lamination']
+		layers = ['DP_Floor', 'DP_Dimension_layer', 'DP_Comp_layer', 'DP_lamination', 'DP_Wall']
 		layers.each { |name|
 			Sketchup.active_model.layers.add(name) if Sketchup.active_model.layers[name].nil?
 		}

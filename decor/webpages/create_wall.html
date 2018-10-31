@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+  <link rel="stylesheet" href="../webpages/css/semantic.min.css"/>
+  <script src="../webpages/css/jquery-3.1.1.min.js"></script>
+  <script src="../webpages/css/semantic.min.js"></script>
+  <script type="text/javascript" src="create_wall.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+  <script src="../webpages/js/jquery.growl.js" type="text/javascript"></script>
+  <link href="../webpages/css/jquery.growl.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+	<div class="ui container-fluid">
+		<div class="ui equal width center aligned padded grid">
+			<div class="row" style="background-color: #333;color: #D60000;font-size:22px; ">
+				<div class="column"><b>Decorpot Standards</b></div>
+			</div>
+		</div>
+	</div><br>
+
+	<div class="ui container">
+	  <div class="ui two column grid" style="border: 2px solid #ccc; border-radius: 5px;">
+	  	<div class="column">
+	      <img class="ui small image" src="../controller/icons/walls.png">
+	    </div>
+	    <div class="column">
+	    	<div class="ui form">
+	    		<div class="field" style="/*width: 130px;">
+	    			<label>Wall 1: (mm)</label>
+	    			<div class="ui input"><input type="text" class="allownumeric" placeholder="w1" id="wall1"></div>
+	    		</div>
+	    		<div class="field" style="/*width: 130px;">
+	    			<label>Wall 2: (mm)</label>
+	    			<div class="ui input"><input type="text" class="allownumeric" placeholder="w2" id="wall2"></div>
+	    		</div>
+	    	</div>
+	    </div>
+	  </div>
+
+	  <div class="ui two column grid">
+	  	<div class="column">
+	  		<div class="ui form">
+	    		<div class="field" style="/*width: 130px;*/">
+	    			<label>Wall Height: (mm)</label>
+	    			<div class="ui input"><input type="text" class="allownumeric" placeholder="Enter height.." id="wheight"></div>
+	    		</div>
+	    	</div>
+	    </div>
+	    <div class="column">
+	    	<div class="ui form">
+	    		<div class="field" style="/*width: 130px;*/">
+	    			<label>Wall Thickness: (mm)</label>
+	    			<div class="ui input"><input type="text" class="allownumeric" placeholder="Enter thickness.." id="wthick"></div>
+	    		</div>
+	    	</div>
+	  	</div>
+	  </div>
+
+	  <div class="row" style="margin-top: 1em;">
+	  		<div class="ui column">
+		  		<div class="ui checkbox">
+		  			<input type="checkbox" name="door" id="checkdoor" onclick="checkd()">
+		  			<label>Door</label>
+		  		</div>
+
+		  		<div id="doorblock" style="display:none; margin-top: 1em;">
+		  			<select class="ui fluid dropdown" id="door_view">
+		  				<option value="0">Select View</option>
+		  				<option value="back">Back</option>
+		  				<option value="front">Front</option>
+		  				<option value="left">Left</option>
+		  				<option value="right">Right</option>
+		  			</select>
+
+		  			<div class="ui form" style="margin-top: 1em;">
+		  				<div class="field">
+		  					<label>From Left Position: (mm)</label>
+		  					<input type="text" placeholder="Distance from start.." id="door_position" class="allownumeric">
+		  				</div>
+		  			</div>
+
+		  			<div class="ui form" style="margin-top: 1em;">
+		  				<div class="field">
+		  					<label>Door Height: (mm)</label>
+		  					<input type="text" placeholder="Door height.." id="door_height" class="allownumeric">
+		  				</div>
+		  			</div>
+
+		  			<div class="ui form" style="margin-top: 1em;">
+		  				<div class="field">
+		  					<label>Door Length: (mm)</label>
+		  					<input type="text" placeholder="Door length.." id="door_length" class="allownumeric">
+		  				</div>
+		  			</div>
+		  		</div>
+	  		</div>
+
+	  		<!-- <div class="column">
+		  		<div class="ui checkbox">
+		  			<input type="checkbox" name="window" id="checkwin" onclick="checkw()">
+		  			<label>Window</label>
+		  		</div>
+
+		  		<div id="windowblock" style="display:none; margin-top: 1em;">
+		  			<select class="ui fluid dropdown" id="window_view">
+		  				<option value="0">Select View</option>
+		  				<option value="back">Back</option>
+		  				<option value="front">Front</option>
+		  				<option value="left">Left</option>
+		  				<option value="right">Right</option>
+		  			</select>
+
+		  			<div class="ui form" style="margin-top: 1em;">
+		  				<div class="field">
+		  					<label>From Left Position: (mm)</label>
+		  					<input type="text" placeholder="Enter value.." id="win_lftposition" class="allownumeric">
+		  				</div>
+
+		  				<div class="field">
+		  					<label>Bottom Position: (mm)</label>
+		  					<input type="text" placeholder="Enter value.." id="win_btmposition" class="allownumeric">
+		  				</div>
+		  			</div>
+		  		</div>
+	  		</div> -->
+
+	  		<div class="column" style="width: 100%; text-align: center;margin-top: 1em;">
+	  			<button class="ui red button" onclick="OnCancel()">Cancel</button>&emsp;
+	  			<button class="ui blue button" onclick="SubmitVal()">Create</button>
+	  		</div>
+	  </div>
+	</div>
+	<script>
+		$('.ui.dropdown').dropdown();
+	</script>
+</body>
+</html>

@@ -48,6 +48,9 @@ module DP
 	def self.backup_current_file
 		backup_folder 	= get_plugin_folder
 		backup_file 	= current_file_path
+		file_name		= File.basename(backup_file, '.skp')
+		
+		
 		FileUtils.cp(current_file_path, backup_folder)
 	end
 	
